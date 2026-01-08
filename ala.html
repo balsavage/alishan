@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿里山眠月線之旅 🌲</title>
+    <style>
+        :root {
+            --primary: #2c5e50; /* 森林綠 */
+            --accent: #e67e22;  /* 日出橘 */
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #333;
+            --light-text: #666;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Header Area */
+        header {
+            background: linear-gradient(135deg, var(--primary), #1a3c32);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; font-size: 1.8rem; letter-spacing: 1px; }
+        .subtitle { font-size: 0.9rem; opacity: 0.9; margin-top: 5px; }
+        .countdown { 
+            margin-top: 15px; 
+            font-weight: bold; 
+            background: rgba(255,255,255,0.2); 
+            display: inline-block; 
+            padding: 5px 15px; 
+            border-radius: 20px; 
+            font-size: 0.9rem;
+        }
+
+        /* Container */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .info-item { font-size: 0.9rem; }
+        .info-label { color: var(--light-text); font-size: 0.8rem; display: block; }
+        .info-value { font-weight: bold; }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+            border-left: 2px solid #ddd;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding-left: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        .timeline-item.sunrise::before {
+            background: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .time {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+        .event { font-weight: bold; margin: 2px 0; }
+        .desc { font-size: 0.85rem; color: var(--light-text); }
+        .day-header {
+            background: var(--primary);
+            color: white;
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            margin-left: -20px; /* Align with line */
+        }
+
+        /* Checklist */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .checklist-item input { margin-right: 10px; transform: scale(1.2); }
+        .checklist-item.checked span {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        .alert {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            border-left: 5px solid #ffeeba;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>阿里山 ‧ 迷霧行</h1>
+        <div class="subtitle">2026.02.02 - 02.03</div>
+        <div class="countdown" id="countdown-timer">計算中...</div>
+    </header>
+
+    <div class="container">
+
+        <div class="card" id="info">
+            <h2>📍 關鍵資訊</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">集合時間</span>
+                    <span class="info-value">2/2 10:00 AM</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">集合地點</span>
+                    <span class="info-value">嘉義高鐵站</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">住宿</span>
+                    <span class="info-value">大峯山莊</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">重點</span>
+                    <span class="info-value">日出 & 眠月線</span>
+                </div>
+            </div>
+            <div style="margin-top: 15px; text-align: center;">
+                <a href="https://goo.gl/maps/abc" target="_blank" class="btn">🗺️ 導航至大峯山莊</a>
+            </div>
+        </div>
+
+        <div class="alert">
+            <strong>⚠️ 重要提醒：</strong> <br>
+            1. 眠月線需事先申請「一葉蘭保留區許可」。<br>
+            2. 頭燈/手電筒必帶（隧道全黑）。<br>
+            3. 若下大雨建議取消眠月線。
+        </div>
+
+        <div class="card">
+            <h2>📅 行程規劃</h2>
+            
+            <div class="timeline">
+                <div class="day-header">Day 1：2/2 (週一) 上山與暖身</div>
+                
+                <div class="timeline-item">
+                    <div class="time">10:00</div>
+                    <div class="event">嘉義高鐵站集合</div>
+                    <div class="desc">租車或轉乘台灣好行，開啟旅程。</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="time">12:00</div>
+                    <div class="event">奮起湖午餐 🍱</div>
+                    <div class="desc">必吃鐵路便當、甜甜圈，稍作休息。</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="time">14:30</div>
+                    <div class="event">抵達阿里山 & Check-in</div>
+                    <div class="desc">入住大峯山莊，放置行李。</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="time">15:30</div>
+                    <div class="event">🔥 重要任務：買票</div>
+                    <div class="desc">前往阿里山車站，預買明日祝山線車票。隨後園區散步(沼平/神木)。</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="time">18:00</div>
+                    <div class="event">晚餐 & 休息</div>
+                    <div class="desc">商店街火鍋暖胃，建議 20:00 前就寢。</div>
+                </div>
+
+                <br>
+                <div class="day-header" style="background: var(--accent);">Day 2：2/3 (週二) 日出與眠月</div>
+
+                <div class="timeline-item sunrise">
+                    <div class="time">04:00</div>
+                    <div class="event">起床出發</div>
+                    <div class="desc">搭乘小火車前往祝山/對高岳。</div>
+                </div>
+
+                <div class="timeline-item sunrise">
+                    <div class="time">06:40 - 07:10</div>
+                    <div class="event">🌄 欣賞日出</div>
+                    <div class="desc">迎接第一道曙光，隨後返回飯店。</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="time">08:00 - 11:00</div>
+                    <div class="event">補眠時間 💤</div>
+                    <div class="desc">吃早餐後回房補眠，恢復體力。</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="time">11:30</div>
+                    <div class="event">🛤️ 眠月線探險 (輕裝)</div>
+                    <div class="desc">退房寄行李。帶著午餐飯糰出發。<br>路線：沼平 -> 塔山步道 -> 眠月線 -> 1號明隧道。</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="time">16:00</div>
+                    <div class="event">下山返程</div>
+                    <div class="desc">取回行李，開車/搭車下山，預計晚上抵達高鐵。</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🎒 裝備檢查 (點擊劃掉)</h2>
+            <div id="checklist">
+                <label class="checklist-item"><input type="checkbox"><span>身分證/健保卡</span></label>
+                <label class="checklist-item"><input type="checkbox"><span>眠月線許可證 (截圖或紙本)</span></label>
+                <label class="checklist-item"><input type="checkbox"><span>保暖衣物 (毛帽/手套)</span></label>
+                <label class="checklist-item"><input type="checkbox"><span>好走的鞋 (防滑佳)</span></label>
+                <label class="checklist-item"><input type="checkbox"><span>頭燈或強力手電筒</span></label>
+                <label class="checklist-item"><input type="checkbox"><span>行動電源</span></label>
+                <label class="checklist-item"><input type="checkbox"><span>暈車藥/個人藥品</span></label>
+                <label class="checklist-item"><input type="checkbox"><span>簡單午餐 (麵包/飯糰)</span></label>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. 倒數計時功能
+        const tripDate = new Date("Feb 2, 2026 10:00:00").getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = tripDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown-timer").innerHTML = "旅程進行中！🎉";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("countdown-timer").innerHTML = `距離出發還有：${days} 天 ${hours} 小時`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // 2. 檢查清單互動效果
+        const items = document.querySelectorAll('.checklist-item');
+        items.forEach(item => {
+            const checkbox = item.querySelector('input');
+            
+            // 點擊整行都能觸發
+            item.addEventListener('click', (e) => {
+                if (e.target !== checkbox) {
+                    checkbox.checked = !checkbox.checked;
+                }
+                toggleStyle(item, checkbox.checked);
+            });
+
+            // 監聽 Checkbox 變化
+            checkbox.addEventListener('change', () => {
+                toggleStyle(item, checkbox.checked);
+            });
+        });
+
+        function toggleStyle(element, isChecked) {
+            if (isChecked) {
+                element.classList.add('checked');
+            } else {
+                element.classList.remove('checked');
+            }
+        }
+    </script>
+</body>
+</html>
